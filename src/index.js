@@ -14,8 +14,9 @@ const elem = {
 } 
 
 
- elem.error.classList.add('is-hidden');
- elem.loader.classList.replace('loader', 'is-hidden');
+elem.error.classList.add('is-hidden');
+elem.loader.classList.add('is-hidden');
+elem.loader.classList.replace('loader', 'is-hidden');
 
 fetchBreeds().then(data => {
     const breeds = data.map(breed => ({
@@ -39,18 +40,43 @@ fetchBreeds().then(data => {
 elem.select.addEventListener('change', onChange);
 
 function onChange(evt) {
-    fetchCatByBreed()
-    //elem.loader.classList.replace('is-hidden', 'loader');
-    //elem.select.classList.add('is-hidden');
+    const breedId = evt.currentTarget.value;
+    console.log(breedId);
+    
+    fetchCatByBreed(breedId)
+        .then(data => {
+            console.log(data)
+            const { url, breeds } = data[0]
+            console.log(data[0])
+            elem.cardCatInfo.innerHTML = createMarcup(data.url, breeds);
+             
+        })
+        .catch(err => {
+            Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
+                position: 'center-top',
+        
+            });
+        });
+        
+           
+        
+ 
+//     //elem.loader.classList.replace('is-hidden', 'loader');
+//     //elem.select.classList.add('is-hidden');
 
 
     
-}
+ }
 
-function createMarcup() {
-    
-}
+function createMarcup(arr) {
+    return arr.map(({url, breeds}) => `<img src = "${url}", alt = "${breeds[0].name}" width = "400"></>
+    <h1>${breeds[0].name}</h1>
+    <p>${breeds[0].description}</p>
+    <h2>Temperament:</h2>
+    <p>${breeds[0].temperament}</p>`).join('')
 
+}
+ createMarcup()
 
     
     

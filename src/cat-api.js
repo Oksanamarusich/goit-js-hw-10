@@ -17,7 +17,6 @@ export function fetchBreeds() {
     
 };
 
-
 export function fetchCatByBreed(breedId) {
     return fetch(`${url}/images/search?api-key = ${api_key}&breed_ids=${breedId}`)
         .then((resp) => {
@@ -29,4 +28,4 @@ export function fetchCatByBreed(breedId) {
             return resp.json();
             
         })
-}
+};
