@@ -6,12 +6,22 @@
 body {
     background-color:grey;
 }
+img {
+  width: 600px;
+  height: 500px;
+}
 .cat-info{
   background-color: #FFF;
   width: 1400px;
   height: 1600px;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
+    padding: 20px;
+    width: 1260px;
+    height: auto;
+    margin: auto;
+    
+
 }
 
 .loader {
