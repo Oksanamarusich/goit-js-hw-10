@@ -14,12 +14,15 @@ const elem = {
     cardCatInfo: document.querySelector('.cat-info'),
 } 
 
-
-elem.error.classList.add('is-hidden');
-elem.loader.classList.add('is-hidden');
+// elem.loader.style.visibility = 'hidden';
+// elem.error.style.visibility = 'hidden';
+// elem.cardCatInfo.style.visibility = 'hidden';
+ elem.error.classList.add('is-hidden');
+ elem.loader.classList.add('is-hidden');
 elem.loader.classList.replace('loader', 'is-hidden');
-elem.cardCatInfo.classList.add('is-hidden');
+//elem.cardCatInfo.classList.add('is-hidden');
 //elem.cardCatInfo.classList.replace('cat-info', 'is-hidden');
+elem.select.classList.add('is-hidden');
 
 fetchBreeds().then(data => {
     
@@ -29,7 +32,8 @@ fetchBreeds().then(data => {
        new SlimSelect({
      select: elem.select,
      data: breeds,
-  });
+       });
+  
 })
      .catch(err => {
        console.log(err);
@@ -38,20 +42,26 @@ fetchBreeds().then(data => {
         
       })
           .finally(() => {
-             
+            elem.select.classList.remove('is-hidden');
+            elem.loader.classList.replace('loader', 'is-hidden')
          })
 });
         
 
-
+elem.cardCatInfo.classList.add('is-hidden');
+elem.loader.classList.replace('is-hidden', 'loader')
 elem.select.addEventListener('change', onChange);
 
 function onChange(evt) {
-    
+  
      const breedId = evt.currentTarget.value;
     fetchCatByBreed(breedId)
-        .then(data => {
-           
+      .then(data => {
+        if (data[0]) {
+            elem.loader.style.visibility = 'visible';
+         elem.cardCatInfo.style.visibility = 'visible';
+          }
+         
             const { url } = data[0];
             const { name, description, temperament } = data[0].breeds[0];
             elem.cardCatInfo.classList.remove('is-hidden');
@@ -68,6 +78,10 @@ function onChange(evt) {
                 position: 'center-top',
         
             })
+              .finally(() => {
+            elem.cardCatInfo.classList.remove('is-hidden');
+elem.loader.classList.replace('loader', 'is-hidden')
+          })
                 
         });
         
