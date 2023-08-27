@@ -12,21 +12,15 @@ const elem = {
     loader: document.querySelector('.loader'),
     error: document.querySelector('.error'),
     cardCatInfo: document.querySelector('.cat-info'),
-} 
+}
 
-// elem.loader.style.visibility = 'hidden';
-// elem.error.style.visibility = 'hidden';
-// elem.cardCatInfo.style.visibility = 'hidden';
- elem.error.classList.add('is-hidden');
- elem.loader.classList.add('is-hidden');
+elem.error.classList.add('is-hidden');
 elem.loader.classList.replace('loader', 'is-hidden');
-//elem.cardCatInfo.classList.add('is-hidden');
-//elem.cardCatInfo.classList.replace('cat-info', 'is-hidden');
-elem.select.classList.add('is-hidden');
+elem.cardCatInfo.style.display = 'none';
 
 fetchBreeds().then(data => {
     
-     const breeds = data.map(breed => ({
+         const breeds = data.map(breed => ({
          value: breed.id, text: breed.name
      }));
        new SlimSelect({
@@ -41,36 +35,35 @@ fetchBreeds().then(data => {
         position: 'center-top',
         
       })
-          .finally(() => {
-            elem.select.classList.remove('is-hidden');
-            elem.loader.classList.replace('loader', 'is-hidden')
+          
+     })
+.finally(() => {
+    
+    elem.loader.classList.add('is-hidden');
+    
          })
-});
-        
+    
 
-elem.cardCatInfo.classList.add('is-hidden');
-elem.loader.classList.replace('is-hidden', 'loader')
 elem.select.addEventListener('change', onChange);
 
 function onChange(evt) {
-  
+  elem.loader.classList.replace('is-hidden', 'loader');
+    
+   
      const breedId = evt.currentTarget.value;
     fetchCatByBreed(breedId)
-      .then(data => {
-        if (data[0]) {
-            elem.loader.style.visibility = 'visible';
-         elem.cardCatInfo.style.visibility = 'visible';
-          }
-         
+        .then(data => {
+          elem.loader.classList.replace('loader', 'is-hidden');
+          
             const { url } = data[0];
             const { name, description, temperament } = data[0].breeds[0];
-            elem.cardCatInfo.classList.remove('is-hidden');
+            
             elem.cardCatInfo.innerHTML = `<div><img src ="${url}", alt = "${name}", width ="800"</></div>
             <div><h1>${name}</h1>
             <p>${description}</p>
             <h2>Temperament</h2>
             <p>${temperament}</p></div>`
-         
+          
         })
         .catch(err => {
             
@@ -78,12 +71,20 @@ function onChange(evt) {
                 position: 'center-top',
         
             })
-              .finally(() => {
-            elem.cardCatInfo.classList.remove('is-hidden');
-elem.loader.classList.replace('loader', 'is-hidden')
-          })
+             
                 
-        });
+        })
+    .finally(() => {
+        elem.cardCatInfo.style.display = 'flex';
+    elem.select.style.display = 'none';
+              
+         })
         
 }
+ 
+
+
+
+
+
 
