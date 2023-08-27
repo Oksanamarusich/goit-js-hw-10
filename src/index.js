@@ -16,7 +16,7 @@ const elem = {
 
 elem.error.classList.add('is-hidden');
 elem.loader.classList.replace('loader', 'is-hidden');
-elem.cardCatInfo.style.display = 'none';
+elem.cardCatInfo.classList.replace('cat-info', 'is-hidden');
 
 fetchBreeds().then(data => {
     
@@ -74,12 +74,11 @@ function onChange(evt) {
              
                 
         })
-    .finally(() => {
-        elem.cardCatInfo.style.display = 'flex';
-    elem.select.style.display = 'none';
-              
-         })
+  .finally(() => {
         
+        elem.select.style.display = 'none';
+    elem.cardCatInfo.classList.replace('is-hidden', 'cat-info');
+         })
 }
  
 
