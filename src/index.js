@@ -11,7 +11,7 @@ const elem = {
     container: document.querySelector('.cat-info'),
     loader: document.querySelector('.loader'),
     error: document.querySelector('.error'),
-  cardCatInfo: document.querySelector('.cat-info'),
+    cardCatInfo: document.querySelector('.cat-info'),
   
 }
 
@@ -19,16 +19,18 @@ const elem = {
 elem.error.classList.add('is-hidden');
 elem.cardCatInfo.style.display = 'none';
 elem.select.classList.add('is-hidden');
+
 fetchBreeds().then(data => {
     
          const breeds = data.map(breed => ({
          value: breed.id, text: breed.name
-     }));
+         }));
+  
        new SlimSelect({
      select: elem.select,
      data: breeds,
        });
-  
+   
 })
   .catch(err => {
     elem.loader.style.display = 'none';
@@ -52,13 +54,14 @@ elem.select.addEventListener('change', onChange);
 
 function onChange(evt) {
   elem.loader.classList.replace('is-hidden', 'loader');
-    
+  
    
      const breedId = evt.currentTarget.value;
     fetchCatByBreed(breedId)
         .then(data => {
-          elem.loader.classList.replace('loader', 'is-hidden');
-          
+            elem.loader.classList.replace('loader', 'is-hidden');
+            elem.select.style.display = 'none';
+            elem.cardCatInfo.style.display = 'none';
             const { url } = data[0];
             const { name, description, temperament } = data[0].breeds[0];
             
@@ -70,7 +73,7 @@ function onChange(evt) {
           
         })
       .catch(err => {
-        elem.loader.style.display = 'none';
+           elem.loader.style.display = 'none';
             elem.select.style.display = 'none';
             elem.cardCatInfo.style.display = 'none';
             Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
@@ -81,9 +84,10 @@ function onChange(evt) {
                 
         })
   .finally(() => {
-        
-       // elem.select.style.display = 'none';
-    elem.cardCatInfo.classList.replace('is-hidden', 'cat-info');
+       
+     elem.cardCatInfo.style.display = 'flex';
+     elem.select.style.display = 'none';
+
          })
 }
  
