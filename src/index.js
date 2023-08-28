@@ -11,13 +11,14 @@ const elem = {
     container: document.querySelector('.cat-info'),
     loader: document.querySelector('.loader'),
     error: document.querySelector('.error'),
-    cardCatInfo: document.querySelector('.cat-info'),
+  cardCatInfo: document.querySelector('.cat-info'),
+  
 }
 
-elem.error.classList.add('is-hidden');
-elem.loader.classList.replace('loader', 'is-hidden');
-elem.cardCatInfo.classList.replace('cat-info', 'is-hidden');
 
+elem.error.classList.add('is-hidden');
+elem.cardCatInfo.style.display = 'none';
+elem.select.classList.add('is-hidden');
 fetchBreeds().then(data => {
     
          const breeds = data.map(breed => ({
@@ -29,7 +30,10 @@ fetchBreeds().then(data => {
        });
   
 })
-     .catch(err => {
+  .catch(err => {
+    elem.loader.style.display = 'none';
+    elem.select.style.display = 'none';
+    elem.cardCatInfo.style.display = 'none';
        console.log(err);
       Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
         position: 'center-top',
@@ -40,7 +44,7 @@ fetchBreeds().then(data => {
 .finally(() => {
     
     elem.loader.classList.add('is-hidden');
-    
+  
          })
     
 
@@ -65,8 +69,10 @@ function onChange(evt) {
             <p>${temperament}</p></div>`
           
         })
-        .catch(err => {
-            
+      .catch(err => {
+        elem.loader.style.display = 'none';
+            elem.select.style.display = 'none';
+            elem.cardCatInfo.style.display = 'none';
             Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
                 position: 'center-top',
         
@@ -76,7 +82,7 @@ function onChange(evt) {
         })
   .finally(() => {
         
-        elem.select.style.display = 'none';
+       // elem.select.style.display = 'none';
     elem.cardCatInfo.classList.replace('is-hidden', 'cat-info');
          })
 }
