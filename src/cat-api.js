@@ -22,6 +22,7 @@ function fetchBreeds() {
 };
 
 function fetchCatByBreed(breedId) {
+   
     return axios.get(`${url}images/search?breed_ids=${breedId}`)
         .then(({ data }) => {
             console.log(data);

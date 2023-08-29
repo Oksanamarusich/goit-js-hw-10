@@ -15,9 +15,8 @@ const elem = {
   
 }
 
-
+ 
 elem.error.classList.add('is-hidden');
-elem.cardCatInfo.style.display = 'none';
 elem.select.classList.add('is-hidden');
 
 fetchBreeds().then(data => {
@@ -25,43 +24,41 @@ fetchBreeds().then(data => {
          const breeds = data.map(breed => ({
          value: breed.id, text: breed.name
          }));
-  
-       new SlimSelect({
+  const emptyObj = { text: "", value: "" };
+  breeds.unshift(emptyObj);
+  if ({ id } !== "") {
+    new SlimSelect({
      select: elem.select,
      data: breeds,
        });
-   
+  } else {
+    
+    Notify.info('Select the breed of the cat');
+  }
+    
 })
-  .catch(err => {
-    elem.loader.style.display = 'none';
-    elem.select.style.display = 'none';
-    elem.cardCatInfo.style.display = 'none';
+.catch(err => {
+  elem.cardCatInfo.style.display = 'none';
        console.log(err);
-      Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
-        position: 'center-top',
+     Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
+       position: 'center-top',
         
       })
           
      })
-.finally(() => {
-    
-    elem.loader.classList.add('is-hidden');
   
-         })
-    
 
 elem.select.addEventListener('change', onChange);
 
 function onChange(evt) {
-  elem.loader.classList.replace('is-hidden', 'loader');
-  
-   
-     const breedId = evt.currentTarget.value;
+  elem.loader.style.display = 'flex';
+  elem.cardCatInfo.style.display = 'none';
+ const breedId = evt.currentTarget.value;
     fetchCatByBreed(breedId)
         .then(data => {
-            elem.loader.classList.replace('loader', 'is-hidden');
+            
             elem.select.style.display = 'none';
-            elem.cardCatInfo.style.display = 'none';
+            
             const { url } = data[0];
             const { name, description, temperament } = data[0].breeds[0];
             
@@ -70,12 +67,10 @@ function onChange(evt) {
             <p>${description}</p>
             <h2>Temperament</h2>
             <p>${temperament}</p></div>`
-          
+           elem.cardCatInfo.style.display = 'flex';
         })
-      .catch(err => {
-           elem.loader.style.display = 'none';
-            elem.select.style.display = 'none';
-            elem.cardCatInfo.style.display = 'none';
+  .catch(err => {
+    elem.cardCatInfo.style.display = 'none';
             Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
                 position: 'center-top',
         
@@ -83,17 +78,11 @@ function onChange(evt) {
              
                 
         })
-  .finally(() => {
-       
-     elem.cardCatInfo.style.display = 'flex';
-     elem.select.style.display = 'none';
+  
+.finally(() => {
+  elem.loader.style.display = 'none';
+ 
+})
 
-         })
 }
  
-
-
-
-
-
-
