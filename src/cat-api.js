@@ -9,31 +9,42 @@ const url = 'https://api.thecatapi.com/v1/';
 
 function fetchBreeds() {
     return axios('breeds')
-        .then(({ data }) => {
-            console.log(data);
-            return data;
+    .then(({ data }) => {
+             console.log(data);
+             return data;
         })
-        .catch(error => {
+            .catch(error => {
             console.log(error)
             Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
                 position: 'center-top'
             })
-        });
-};
+        })
+
+}
+
 
 function fetchCatByBreed(breedId) {
-   
-    return axios.get(`${url}images/search?breed_ids=${breedId}`)
-        .then(({ data }) => {
-            console.log(data);
-            return data;
-        })
-        .catch(error => {
-            console.log(error)
-            Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
-                position: 'center-top'
+    
+        return axios.get(`${url}images/search?breed_ids=${breedId}`)
+    
+            .then(({ data }) => {
+                console.log(data);
+                return data;
             })
-        });
+    
+            .catch(error => {
+                
+                    console.log(error)
+                Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
+                    position: 'center-top'
+                })
+                
+                
+            });
+    
+    
+   
+    
 };
 
 export { fetchBreeds, fetchCatByBreed };

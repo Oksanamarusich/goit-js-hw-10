@@ -18,24 +18,19 @@ const elem = {
  
 elem.error.classList.add('is-hidden');
 elem.select.classList.add('is-hidden');
+elem.cardCatInfo.style.display = 'none';
 
 fetchBreeds().then(data => {
     
-         const breeds = data.map(breed => ({
-         value: breed.id, text: breed.name
+          const breeds = data.map(breed => ({
+          value: breed.id, text: breed.name
          }));
-  const emptyObj = { text: "", value: "" };
-  breeds.unshift(emptyObj);
-  if ({ id } !== "") {
-    new SlimSelect({
-     select: elem.select,
-     data: breeds,
-       });
-  } else {
-    
-    Notify.info('Select the breed of the cat');
-  }
-    
+   const emptyObj = { text: "", value: "" };
+   breeds.unshift(emptyObj);
+   new SlimSelect({
+      select: elem.select,
+      data: breeds,
+    })
 })
 .catch(err => {
   elem.cardCatInfo.style.display = 'none';
@@ -53,11 +48,15 @@ elem.select.addEventListener('change', onChange);
 function onChange(evt) {
   elem.loader.style.display = 'flex';
   elem.cardCatInfo.style.display = 'none';
- const breedId = evt.currentTarget.value;
-    fetchCatByBreed(breedId)
-        .then(data => {
-            
-            elem.select.style.display = 'none';
+  const breedId = evt.currentTarget.value;
+  if (breedId === "") {
+    elem.loader.style.display = 'none';
+    return;
+  } else {
+     fetchCatByBreed(breedId)
+      .then(data => {
+        
+          elem.select.style.display = 'none';
             
             const { url } = data[0];
             const { name, description, temperament } = data[0].breeds[0];
@@ -67,9 +66,11 @@ function onChange(evt) {
             <p>${description}</p>
             <h2>Temperament</h2>
             <p>${temperament}</p></div>`
-           elem.cardCatInfo.style.display = 'flex';
-        })
-  .catch(err => {
+          elem.cardCatInfo.style.display = 'flex';
+          
+         })
+      .catch(err => {
+    
     elem.cardCatInfo.style.display = 'none';
             Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
                 position: 'center-top',
@@ -85,4 +86,6 @@ function onChange(evt) {
 })
 
 }
+  }
+   
  
