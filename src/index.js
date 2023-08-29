@@ -74,18 +74,13 @@ function onChange(evt) {
     elem.cardCatInfo.style.display = 'none';
             Notify.failure('Oops! Something went wrong! Try reloading the page or select another cat breed!', {
                 position: 'center-top',
-        
-            })
-             
-                
-        })
+         })
+      })
   
 .finally(() => {
   elem.loader.style.display = 'none';
- 
-})
-
+ })
 }
-  }
+}
    
  
